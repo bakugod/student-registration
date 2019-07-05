@@ -1,9 +1,21 @@
 import React from "react"
+import * as jsPDF from 'jspdf'
+import { createStore, createEvent } from 'effector'
 import { useStore } from "effector-react"
 
 import {
   Input,
 } from "../../../ui"
+
+
+const $email = createStore('hello@ww.ru')
+
+const emailChanged = createEvent()
+
+const trimEvent = (event) => event.target.value.trim()
+
+$email.on(emailChanged.map(trimEvent), (_, email) => email)
+
 
 // import {
 //   formSubmitted,
@@ -36,20 +48,32 @@ const SomeForm = () => {
   //const isSubmitEnabled = useStore($isSubmitEnabled)
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={sub}>
       <div>
         <h2>Welcome to Hell</h2>
         <Email />
-        <Password />
+        {/* <Password /> */}
+        <button type="submit">отправить</button>
       </div>
     </form>
   )
 }
 
+const sub = () =>{
+  
+  const doc = new jsPDF()
+
+  doc.text($email.getState(), 100, 210)
+  doc.save('a4.pdf')
+}
+
+
+
 const Email = () => {
-//   const email = useStore($email)
+   const email = useStore($email)
 //   const isFormDisabled = useStore($isFormDisabled)
 //   const emailError = useStore($emailError)
+console.log($email.getState())
 
   return (
     <Input
@@ -58,8 +82,8 @@ const Email = () => {
       autoComplete="email"
       label="Email"
     //   disabled={isFormDisabled}
-    //   onChange={emailChanged}
-    //   value={email}
+       onChange={emailChanged}
+       value={email}
     //   error={email && emailError}
     />
   )

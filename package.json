@@ -5,6 +5,7 @@
   "dependencies": {
     "effector": "^19.1.0",
     "effector-react": "^19.1.2",
+    "jspdf": "^1.5.3",
     "prop-types": "^15.7.2",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
